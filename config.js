@@ -5,7 +5,7 @@ window.TRAINING_CONFIG = {
   // Supabase project. The anon (public) key is in Supabase > Project Settings > API.
   // Never paste the service_role key here.
   supabaseUrl: "https://bmfoiyesrmkheineqkdp.supabase.co",
-  supabaseAnonKey: "",
+  supabaseAnonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJtZm9peWVzcm1raGVpbmVxa2RwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg3NzY5MzUsImV4cCI6MjA5NDM1MjkzNX0.IgRpUyjWVTJm3f09IblG9N9kfaCLzoGXcPvZiKrTAko",
   table: "training_events",
 
   // Who can sign in to Admin. Must match the email in schema.sql (is_training_admin).

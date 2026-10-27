@@ -274,6 +274,9 @@ main { padding-block: 28px 64px; }
 @keyframes pop { 0% { transform: scale(.9); } 60% { transform: scale(1.08); } 100% { transform: scale(1); } }
 #nextBtn:disabled { opacity: .45; cursor: not-allowed; }
 @media (prefers-reduced-motion: reduce) { .readchk.ready, .readchk.pop { animation: none; } }
+.reset-box { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line); }
+.reset-box .btn-row { flex-wrap: wrap; gap: 8px; }
+.input.sm { max-width: 100%; min-width: 0; flex: 1 1 200px; padding: 8px 10px; font-size: 14px; }
 .think-q { font-family: var(--display); font-size: 22px; font-weight: 700; margin: 14px 0 12px; }
 .think-a { margin-top: 12px; }
 .think-a p { margin: 6px 0 0; }

@@ -1431,6 +1431,55 @@ window.TRAINING_CONTENT = {
        "narration": "A call comes in after 2 PM. Who is still on shift, and until when?. Use the shift chart, not your memory. Where is each tech, and how many calls are left?. Distance alone doesn't decide it. Give it to the tech who can actually finish it tonight. Then move something off his board if you need to. Nobody can make it tonight?. Make it tomorrow's first stop before you log off."
       },
       {
+       "kind": "think",
+       "title": "You decide: who gets the PM?",
+       "facts": [
+        "It's 5:00 PM and you're building tomorrow.",
+        "A preventive maintenance (PM) call in Natick needs a tech. PMs are not measured by SLA.",
+        "The tech closest to Natick starts at 2:00 PM. The morning crew starts at 7:30 and 8:00."
+       ],
+       "question": "Who gets the PM?",
+       "answer": "The morning crew, even if it's a longer drive.",
+       "why": "Reactive calls that come in after 1:30 PM need someone fresh. If the 2 PM tech is busy with a PM, every late call rolls to tomorrow. It's fine if a late tech sits for an hour waiting. That's cheaper than losing the 12-hour clock on every afternoon call.",
+       "narration": "You decide: who gets the PM?. It's 5:00 PM and you're building tomorrow. A preventive maintenance (PM) call in Natick needs a tech. PMs are not measured by SLA. The tech closest to Natick starts at 2:00 PM. The morning crew starts at 7:30 and 8:00. Who gets the PM? Think about it, then tap to see the answer."
+      },
+      {
+       "kind": "list",
+       "title": "The 27% rule",
+       "items": [
+        "The CT<12 target is 73%. That leaves 27% of calls that can miss 12 hours.",
+        "That 27% is your wiggle room: a tech calls out, a snowstorm, a day with 20 calls.",
+        "Use it on purpose: when one far-away call would cost you several close ones, push the far one to tomorrow.",
+        "Exception: an escalation, like a flooded store or a manager emailing. That one goes first."
+       ],
+       "narration": "The 27% rule. The CT<12 target is 73%. That leaves 27% of calls that can miss 12 hours. That 27% is your wiggle room: a tech calls out, a snowstorm, a day with 20 calls. Use it on purpose: when one far-away call would cost you several close ones, push the far one to tomorrow. Exception: an escalation, like a flooded store or a manager emailing. That one goes first."
+      },
+      {
+       "kind": "think",
+       "title": "You decide: one far call",
+       "facts": [
+        "It's 1:30 PM. 10 reactive McDonald's calls just came in.",
+        "Nine are between Providence and Worcester. One is in Kingston, NY, about 3 hours away.",
+        "You have two afternoon techs, both near Natick."
+       ],
+       "question": "What do you do with Kingston?",
+       "answer": "Push Kingston to tomorrow. Split the nine between the two techs.",
+       "why": "If one tech drives to Kingston, that's his whole night, and you lose 4 or 5 calls in Rhode Island and Massachusetts. Missing 1 out of 10 is fine. Missing 5 out of 10 is not.",
+       "narration": "You decide: one far call. It's 1:30 PM. 10 reactive McDonald's calls just came in. Nine are between Providence and Worcester. One is in Kingston, NY, about 3 hours away. You have two afternoon techs, both near Natick. What do you do with Kingston? Think about it, then tap to see the answer."
+      },
+      {
+       "kind": "think",
+       "title": "You decide: the next morning",
+       "facts": [
+        "Yesterday at 5 PM, 6 calls were left. Their 12-hour clocks ran out overnight.",
+        "This morning, 10 new reactive calls came in between midnight and 6 AM."
+       ],
+       "question": "Which calls go first on today's boards?",
+       "answer": "The 10 new calls. Then fit the 6 old ones in before they reach 36 hours.",
+       "why": "The 6 already missed 12 hours, and doing them first won't change that. If they go first, the 10 new ones miss too, and tomorrow it's 16. You can't use today to fix yesterday.",
+       "narration": "You decide: the next morning. Yesterday at 5 PM, 6 calls were left. Their 12-hour clocks ran out overnight. This morning, 10 new reactive calls came in between midnight and 6 AM. Which calls go first on today's boards? Think about it, then tap to see the answer."
+      },
+      {
        "kind": "mission",
        "title": "Your mission this week",
        "text": "Every time a call comes in after 2 PM, say out loud who is still on, where they are, and how many calls they have left.",
@@ -1446,6 +1495,193 @@ window.TRAINING_CONTENT = {
      "title": "Evening board and beat the clock",
      "minutes": 15,
      "activities": [
+      {
+       "kind": "board",
+       "id": "c2-board-27",
+       "title": "Fix the board: the 27% rule",
+       "when": "1:30 PM, a busy afternoon",
+       "intro": "A practice board built from Qais's board training: 10 reactive calls just came in. Phil and Ben are both near Natick. A tech can do about 5 calls in an afternoon. Build the afternoon, then check your board.",
+       "lanes": [
+        {
+         "id": "phil",
+         "name": "Phil",
+         "info": "Westborough. 2:00-10:30 PM. Near Natick now"
+        },
+        {
+         "id": "ben",
+         "name": "Ben",
+         "info": "10:00 AM-6:30 PM. Near Natick now"
+        },
+        {
+         "id": "tomorrow",
+         "name": "Tomorrow",
+         "info": "First stops tomorrow morning"
+        },
+        {
+         "id": "unscheduled",
+         "name": "Unscheduled",
+         "info": "New at 1:30 PM"
+        }
+       ],
+       "jobs": [
+        {
+         "id": "pvd1",
+         "nowo": true,
+         "lane": "unscheduled",
+         "store": "McDonald's",
+         "town": "Providence, RI",
+         "note": "Reactive, 12-hour clock running"
+        },
+        {
+         "id": "pvd2",
+         "nowo": true,
+         "lane": "unscheduled",
+         "store": "McDonald's",
+         "town": "Providence, RI",
+         "note": "Reactive, 12-hour clock running"
+        },
+        {
+         "id": "cran",
+         "nowo": true,
+         "lane": "unscheduled",
+         "store": "McDonald's",
+         "town": "Cranston, RI",
+         "note": "Reactive, 12-hour clock running"
+        },
+        {
+         "id": "warw",
+         "nowo": true,
+         "lane": "unscheduled",
+         "store": "McDonald's",
+         "town": "Warwick, RI",
+         "note": "Reactive, 12-hour clock running"
+        },
+        {
+         "id": "pawt",
+         "nowo": true,
+         "lane": "unscheduled",
+         "store": "Wendy's",
+         "town": "Pawtucket, RI",
+         "note": "Reactive, 12-hour clock running"
+        },
+        {
+         "id": "wor1",
+         "nowo": true,
+         "lane": "unscheduled",
+         "store": "McDonald's",
+         "town": "Worcester, MA",
+         "note": "Reactive, 12-hour clock running"
+        },
+        {
+         "id": "wor2",
+         "nowo": true,
+         "lane": "unscheduled",
+         "store": "Wendy's",
+         "town": "Worcester, MA",
+         "note": "Reactive, 12-hour clock running"
+        },
+        {
+         "id": "shrw",
+         "nowo": true,
+         "lane": "unscheduled",
+         "store": "McDonald's",
+         "town": "Shrewsbury, MA",
+         "note": "Reactive, 12-hour clock running"
+        },
+        {
+         "id": "aubm",
+         "nowo": true,
+         "lane": "unscheduled",
+         "store": "McDonald's",
+         "town": "Auburn, MA",
+         "note": "Reactive, 12-hour clock running"
+        },
+        {
+         "id": "king",
+         "nowo": true,
+         "lane": "unscheduled",
+         "store": "McDonald's",
+         "town": "Kingston, NY",
+         "note": "Reactive. About 3 hours away"
+        }
+       ],
+       "goals": [
+        {
+         "id": "king",
+         "title": "Kingston goes to tomorrow",
+         "hint": "One tech driving 3 hours each way loses you 4 or 5 calls here. Missing 1 of 10 is what the 27% is for.",
+         "points": 30,
+         "test": {
+          "job": "king",
+          "lanes": [
+           "tomorrow"
+          ]
+         }
+        },
+        {
+         "id": "ri",
+         "title": "Rhode Island stays with one tech",
+         "hint": "Providence, Cranston, Warwick and Pawtucket are close together. One tech, one loop.",
+         "points": 20,
+         "test": {
+          "together": [
+           "pvd1",
+           "pvd2",
+           "cran",
+           "warw",
+           "pawt"
+          ]
+         }
+        },
+        {
+         "id": "ma",
+         "title": "Worcester area stays with the other tech",
+         "hint": "Worcester, Shrewsbury and Auburn are minutes apart.",
+         "points": 20,
+         "test": {
+          "together": [
+           "wor1",
+           "wor2",
+           "shrw",
+           "aubm"
+          ]
+         }
+        },
+        {
+         "id": "full",
+         "title": "Ben has a full afternoon",
+         "hint": "Four or five calls each.",
+         "points": 10,
+         "test": {
+          "minJobs": {
+           "lane": "ben",
+           "n": 4
+          }
+         }
+        },
+        {
+         "id": "full2",
+         "title": "Phil has a full night",
+         "hint": "Four or five calls each.",
+         "points": 10,
+         "test": {
+          "minJobs": {
+           "lane": "phil",
+           "n": 4
+          }
+         }
+        },
+        {
+         "id": "zero",
+         "title": "Nothing left unscheduled",
+         "hint": "Every call is either on a tech or planned for tomorrow.",
+         "points": 10,
+         "test": {
+          "emptyLane": "unscheduled"
+         }
+        }
+       ]
+      },
       {
        "kind": "board",
        "id": "c2-board-1026",
@@ -1697,6 +1933,136 @@ window.TRAINING_CONTENT = {
         }
        ],
        "outcome": "On the real board, Derby was still unscheduled at 5:00 PM Saturday, with Phil on until 10:30 about an hour away."
+      },
+      {
+       "kind": "scenarios",
+       "id": "c2-w2-scen",
+       "title": "Pick the move",
+       "items": [
+        {
+         "id": "pm-late",
+         "when": "5:00 PM, building tomorrow",
+         "context": [
+          "A PM in Natick needs a tech tomorrow. PMs are not measured by SLA.",
+          "Phil (2:00 PM start) lives 15 minutes away. The morning crew starts at 7:30 and 8:00, about 45 minutes away."
+         ],
+         "prompt": "Who gets the PM?",
+         "options": [
+          {
+           "label": "A morning tech, first thing. Phil stays free for afternoon calls.",
+           "rating": "best",
+           "why": "PMs go early. Afternoon techs stay ready for the reactive calls that land after 1:30.",
+           "better": []
+          },
+          {
+           "label": "Phil, but only if no reactive calls come in by 2:00.",
+           "rating": "good",
+           "why": "Keeping Phil's reactive time first is the right idea.",
+           "better": [
+            "He'd still be stuck on it if calls land at 3. Put it on the morning crew."
+           ]
+          },
+          {
+           "label": "Phil. He's closest, so it's the shortest drive.",
+           "rating": "miss",
+           "why": "Short drives matter, usually.",
+           "better": [
+            "Every reactive call after 1:30 now waits for tomorrow. A longer drive for a PM is cheaper."
+           ]
+          },
+          {
+           "label": "Push the PM to next week.",
+           "rating": "ok",
+           "why": "It's not SLA-measured, so it can move.",
+           "better": [
+            "It can, but the morning crew has room for it tomorrow."
+           ]
+          }
+         ]
+        },
+        {
+         "id": "next-morning",
+         "when": "6:00 AM",
+         "context": [
+          "6 calls left from yesterday. Their 12-hour clocks are gone, and they'll hit 36 hours tomorrow evening.",
+          "10 new reactive calls came in overnight. Their 12-hour clocks end between noon and 6 PM."
+         ],
+         "prompt": "How do you build today?",
+         "options": [
+          {
+           "label": "The 10 new calls first, then the 6 old ones fitted in today.",
+           "rating": "best",
+           "why": "You save 10 clocks, and the 6 still beat 36 hours.",
+           "better": []
+          },
+          {
+           "label": "The 6 old calls first, since they've waited longest.",
+           "rating": "miss",
+           "why": "It feels fair to the stores that waited.",
+           "better": [
+            "The 6 already missed 12. Doing them first makes the 10 new ones miss too, and tomorrow you start with 16."
+           ]
+          },
+          {
+           "label": "The 10 new calls today, and the 6 old ones tomorrow morning.",
+           "rating": "ok",
+           "why": "New ones first is right.",
+           "better": [
+            "Tomorrow evening they cross 36 hours. Fit them in today."
+           ]
+          },
+          {
+           "label": "Mix them: whichever is closest on each route.",
+           "rating": "good",
+           "why": "Good routing instinct.",
+           "better": [
+            "Route within the new calls first. The old ones fill in after."
+           ]
+          }
+         ]
+        },
+        {
+         "id": "flood",
+         "when": "1:30 PM",
+         "context": [
+          "Same afternoon: 9 calls between Providence and Worcester, 1 in Kingston, NY.",
+          "Then an email from the McDonald's manager in Kingston: the store is flooding."
+         ],
+         "prompt": "What changes?",
+         "options": [
+          {
+           "label": "Kingston becomes the priority: send the closest available tech now, and push what he had to tomorrow.",
+           "rating": "best",
+           "why": "An escalation like a flood beats the 27% rule. That's the exception.",
+           "better": []
+          },
+          {
+           "label": "Still push Kingston to tomorrow. The math hasn't changed.",
+           "rating": "miss",
+           "why": "Sticking to the plan is usually right.",
+           "better": [
+            "A flooding store is an escalation. The 27% rule is for normal calls."
+           ]
+          },
+          {
+           "label": "Ask Qais what to do.",
+           "rating": "ok",
+           "why": "Fair, it's a big change.",
+           "better": [
+            "Escalations are yours to act on. Move the board, then tell Qais."
+           ]
+          },
+          {
+           "label": "Send a tech tomorrow morning, first stop.",
+           "rating": "good",
+           "why": "First stop is better than later.",
+           "better": [
+            "The store is flooding now. Tomorrow is too late."
+           ]
+          }
+         ]
+        }
+       ]
       }
      ]
     }
@@ -3161,6 +3527,345 @@ window.TRAINING_CONTENT = {
            "why": "The clock does matter.",
            "better": [
             "Subs change cost, so Qais decides."
+           ]
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": 5,
+   "title": "Check history first",
+   "blurb": "Before you dispatch any reactive call, read the store's job history. It catches duplicates, open T9s and stores entered under the wrong customer.",
+   "sessions": [
+    {
+     "key": "c5-w1-tue",
+     "week": 1,
+     "day": "tue",
+     "kind": "lesson",
+     "title": "Check history first",
+     "minutes": 10,
+     "slides": [
+      {
+       "kind": "cover",
+       "title": "Check history first",
+       "sub": "Before you think about SLA or who's closest, open the store's job history. Today you'll learn what to look for and why it saves trips.",
+       "narration": "Check history first. Before you think about SLA or who's closest, open the store's job history. Today you'll learn what to look for and why it saves trips."
+      },
+      {
+       "kind": "list",
+       "title": "Two call types you need to know",
+       "items": [
+        "T4: a Coke reactive call. Something is broken, and the SLA clocks are running.",
+        "T9: an approved job, for example a repair with ordered parts, or a replacement Coke approved.",
+        "A store can have a T4 and a T9 open at the same time for the same problem. That's where duplicates come from."
+       ],
+       "narration": "Two call types you need to know. T4: a Coke reactive call. Something is broken, and the SLA clocks are running. T9: an approved job, for example a repair with ordered parts, or a replacement Coke approved. A store can have a T4 and a T9 open at the same time for the same problem. That's where duplicates come from."
+      },
+      {
+       "kind": "list",
+       "title": "What to look for in the history",
+       "items": [
+        "The most recent call: when were we last there, and what did the tech find?",
+        "Unscheduled calls already open at the store.",
+        "Calls in Ready for Redispatch.",
+        "Calls in Parts Needed, and whether the part was received.",
+        "An open T9 for the same equipment."
+       ],
+       "narration": "What to look for in the history. The most recent call: when were we last there, and what did the tech find? Unscheduled calls already open at the store. Calls in Ready for Redispatch. Calls in Parts Needed, and whether the part was received. An open T9 for the same equipment."
+      },
+      {
+       "kind": "think",
+       "title": "Real case: the tech who \"never showed up\"",
+       "facts": [
+        "A new T4 comes in. The store says: a technician was supposed to come and never showed up.",
+        "In the history: an earlier T4, where the tech found he needed a part we didn't have.",
+        "That part was requested on a T9, and the part is already ordered."
+       ],
+       "question": "What do you do with the new T4?",
+       "answer": "It's a duplicate. Ask Coke dispatch to cancel it, and give them the work order number of the open T9.",
+       "why": "The work is already happening on the T9. Sending another tech is a wasted trip. And if a manager is asking about the store, move the T9 up on the board.",
+       "narration": "Real case: the tech who \"never showed up\". A new T4 comes in. The store says: a technician was supposed to come and never showed up. In the history: an earlier T4, where the tech found he needed a part we didn't have. That part was requested on a T9, and the part is already ordered. What do you do with the new T4? Think about it, then tap to see the answer."
+      },
+      {
+       "kind": "think",
+       "title": "Real case: the $13,000 leak",
+       "facts": [
+        "A McDonald's had a refrigeration leak that would cost about $13,000 to fix.",
+        "We emailed the account coordinator with photos and videos. The owner chose to swap the unit instead of fixing it, and the call was closed.",
+        "Two days later, a new T4 came in for the same unit: still not cooling."
+       ],
+       "question": "Dispatch it, or not?",
+       "answer": "Don't dispatch. It's a duplicate. Cancel it, and email the account coordinator so the store hears the swap plan again.",
+       "why": "On the real day, the new call was dispatched without checking history, and the tech drove out to a unit that was already waiting to be swapped. The store wasn't wrong. The message just didn't reach them.",
+       "narration": "Real case: the $13,000 leak. A McDonald's had a refrigeration leak that would cost about $13,000 to fix. We emailed the account coordinator with photos and videos. The owner chose to swap the unit instead of fixing it, and the call was closed. Two days later, a new T4 came in for the same unit: still not cooling. Dispatch it, or not? Think about it, then tap to see the answer."
+      },
+      {
+       "kind": "think",
+       "title": "Real case: a store with no history",
+       "facts": [
+        "A new call comes in for a store, and the history is completely empty.",
+        "About 90% of the stores we serve, we've been to many times before."
+       ],
+       "question": "What does an empty history usually mean?",
+       "answer": "The call was probably entered under the wrong customer name. Search by store number, address or name, find the real store, and link it.",
+       "why": "Example: a Chipotle in Rhode Island came in as \"Chipotle Restaurant\" instead of \"Chipotle 3600\", so the system didn't match it. Empty history is a red flag, not a new store.",
+       "narration": "Real case: a store with no history. A new call comes in for a store, and the history is completely empty. About 90% of the stores we serve, we've been to many times before. What does an empty history usually mean? Think about it, then tap to see the answer."
+      },
+      {
+       "kind": "steps",
+       "title": "Before you dispatch any reactive call",
+       "steps": [
+        {
+         "h": "Open the job history",
+         "p": "Every time, before SLA, before picking a tech."
+        },
+        {
+         "h": "Is there an open T9 or an open call for the same problem?",
+         "p": "Then it's probably a duplicate: cancel it and point to the open one."
+        },
+        {
+         "h": "Was a swap or a no-repair decision made?",
+         "p": "Cancel the duplicate and email the account coordinator."
+        },
+        {
+         "h": "Is the history empty?",
+         "p": "Search by store number, address or name and link the right customer."
+        },
+        {
+         "h": "Nothing open and it's a real new problem?",
+         "p": "Now check SLA and build it into the board."
+        }
+       ],
+       "narration": "Before you dispatch any reactive call. Open the job history. Every time, before SLA, before picking a tech. Is there an open T9 or an open call for the same problem?. Then it's probably a duplicate: cancel it and point to the open one. Was a swap or a no-repair decision made?. Cancel the duplicate and email the account coordinator. Is the history empty?. Search by store number, address or name and link the right customer. Nothing open and it's a real new problem?. Now check SLA and build it into the board."
+      },
+      {
+       "kind": "mission",
+       "title": "Your mission this week",
+       "text": "Check the history on every reactive call before you dispatch it. Count how many duplicates you catch this week.",
+       "narration": "Your mission this week. Check the history on every reactive call before you dispatch it. Count how many duplicates you catch this week."
+      }
+     ]
+    },
+    {
+     "key": "c5-w1-fri",
+     "week": 1,
+     "day": "fri",
+     "kind": "play",
+     "title": "Duplicate or dispatch?",
+     "minutes": 12,
+     "activities": [
+      {
+       "kind": "scenarios",
+       "id": "c5-dup",
+       "title": "Duplicate or dispatch?",
+       "items": [
+        {
+         "id": "no-show",
+         "when": "New T4",
+         "context": [
+          "New T4 at a McDonald's: \"Technician was supposed to come and never showed up.\"",
+          "History: last week's T4 is completed. The tech noted Parts Needed.",
+          "History: an open T9 for the same unit, Approved to order parts. The part has been received."
+         ],
+         "prompt": "What do you do?",
+         "options": [
+          {
+           "label": "Cancel the new T4 as a duplicate of the T9, and put the T9 on a board now, since the part is in.",
+           "rating": "best",
+           "why": "The part is here, so the T9 can go out. The new T4 is the same problem.",
+           "better": []
+          },
+          {
+           "label": "Cancel the new T4 as a duplicate of the T9.",
+           "rating": "good",
+           "why": "Right call on the duplicate.",
+           "better": [
+            "The part is already received. Schedule the T9 now, or the store calls a third time."
+           ]
+          },
+          {
+           "label": "Dispatch the new T4 so a tech checks on it today.",
+           "rating": "miss",
+           "why": "Getting a tech there fast is a good instinct.",
+           "better": [
+            "The tech would arrive without the part and do nothing. The fix is the T9, which is ready to go."
+           ]
+          },
+          {
+           "label": "Call the store and ask what's going on.",
+           "rating": "ok",
+           "why": "Getting more information is never wrong.",
+           "better": [
+            "The history already tells you. Cancel the duplicate and get the T9 moving."
+           ]
+          }
+         ]
+        },
+        {
+         "id": "swap",
+         "when": "New T4",
+         "context": [
+          "New T4 at a McDonald's: walk-in unit not cooling.",
+          "History, 2 days ago: tech found a refrigerant leak, about $13,000 to repair. Photos sent to the account coordinator. Owner chose to swap the unit. Call completed."
+         ],
+         "prompt": "What do you do?",
+         "options": [
+          {
+           "label": "Cancel it as a duplicate, and email the account coordinator that the store called again about the swap.",
+           "rating": "best",
+           "why": "No wasted trip, and the account coordinator re-confirms the swap plan with the store.",
+           "better": []
+          },
+          {
+           "label": "Cancel it as a duplicate.",
+           "rating": "good",
+           "why": "No wasted trip. Good catch.",
+           "better": [
+            "The store clearly didn't get the message. Email the account coordinator so the store hears it again."
+           ]
+          },
+          {
+           "label": "Dispatch it. Maybe the owner changed his mind and wants it fixed.",
+           "rating": "miss",
+           "why": "It could happen, so it's a fair thought.",
+           "better": [
+            "If the owner changes his mind, Coke sends an approved T9. A new T4 for the same issue is a duplicate."
+           ]
+          },
+          {
+           "label": "Dispatch it, but tell the tech to check the history first.",
+           "rating": "ok",
+           "why": "At least the tech has the story.",
+           "better": [
+            "The trip itself is the waste. Decide at the desk, before anyone drives."
+           ]
+          }
+         ]
+        },
+        {
+         "id": "empty",
+         "when": "New T4",
+         "context": [
+          "New T4 at \"Chipotle Restaurant\" in Rhode Island.",
+          "The job history is empty."
+         ],
+         "prompt": "What do you do first?",
+         "options": [
+          {
+           "label": "Search by store number, address and name to find the real customer, and link the call to it.",
+           "rating": "best",
+           "why": "Most of our stores have history. Empty usually means the call was entered under the wrong customer name.",
+           "better": []
+          },
+          {
+           "label": "Dispatch it. No history means no duplicates.",
+           "rating": "miss",
+           "why": "No history does look like a clean call.",
+           "better": [
+            "Empty history is a red flag. You might be missing an open T9 or a duplicate."
+           ]
+          },
+          {
+           "label": "Ask Coke dispatch to fix the customer name.",
+           "rating": "ok",
+           "why": "The name does need fixing.",
+           "better": [
+            "You can find and link the real store yourself, right now."
+           ]
+          },
+          {
+           "label": "Search by store number, and if nothing comes up, dispatch it.",
+           "rating": "good",
+           "why": "Searching first is the right move.",
+           "better": [
+            "Try the address and the name too before you decide it's a new store."
+           ]
+          }
+         ]
+        },
+        {
+         "id": "real-new",
+         "when": "New T4",
+         "context": [
+          "New T4 at a McDonald's: fountain not dispensing.",
+          "History: last call 3 months ago, completed. Nothing open, no T9."
+         ],
+         "prompt": "What do you do?",
+         "options": [
+          {
+           "label": "It's a real new call. Check the 12-hour clock and build it into the board.",
+           "rating": "best",
+           "why": "History is clean, so now SLA and the board take over.",
+           "better": []
+          },
+          {
+           "label": "Call the store first to confirm it's still down.",
+           "rating": "ok",
+           "why": "Confirming can help sometimes.",
+           "better": [
+            "The clock is running. History is clean, so dispatch."
+           ]
+          },
+          {
+           "label": "Send the tech who did the call 3 months ago, since he knows the store.",
+           "rating": "good",
+           "why": "Knowing the store can help.",
+           "better": [
+            "3 months is a long time and a different problem. Pick the tech by the clock and the board."
+           ]
+          },
+          {
+           "label": "Cancel it as a duplicate of the old call.",
+           "rating": "miss",
+           "why": "Old calls at the same store can look related.",
+           "better": [
+            "A completed call from 3 months ago isn't open. This is a new problem."
+           ]
+          }
+         ]
+        },
+        {
+         "id": "manager",
+         "when": "New T4",
+         "context": [
+          "New T4 at a McDonald's. The manager is asking about the store.",
+          "History: an open T9 for the same unit, Approved to order parts. The part arrives tomorrow."
+         ],
+         "prompt": "What do you do?",
+         "options": [
+          {
+           "label": "Cancel the T4 as a duplicate, and make the T9 the first stop the day the part is received.",
+           "rating": "best",
+           "why": "The manager is watching, so this store moves to the front as soon as the part is in.",
+           "better": []
+          },
+          {
+           "label": "Cancel the T4 as a duplicate.",
+           "rating": "good",
+           "why": "Right on the duplicate.",
+           "better": [
+            "A manager asking means it's a priority. Plan the T9 as a first stop when the part lands."
+           ]
+          },
+          {
+           "label": "Dispatch the T4 today so the manager sees someone show up.",
+           "rating": "miss",
+           "why": "Showing up feels responsive.",
+           "better": [
+            "Without the part the tech can't fix it. That's two trips, and an unhappy manager twice."
+           ]
+          },
+          {
+           "label": "Leave the T4 open until the T9 is done.",
+           "rating": "ok",
+           "why": "Nothing gets lost that way.",
+           "better": [
+            "An open duplicate sits on the board and confuses the next dispatcher. Cancel it."
            ]
           }
          ]

@@ -116,7 +116,10 @@
       rest("training_sessions?select=*", { headers: anonHeaders() }),
       rest("training_settings?select=*", { headers: anonHeaders() })
     ]).then(function (res) {
-      if (!res[0] || !res[0].length) { M = fromStarter(); usingStarter = true; }
+      if (!res[0] || !res[0].length) {
+        M = fromStarter(); usingStarter = true;
+        (res[2] || []).forEach(function (r) { M.settings[r.key] = r.key === "program" || r.key === "cheers" ? Object.assign({}, M.settings[r.key], r.value) : r.value; });
+      }
       else {
         usingStarter = false;
         M = { cycles: res[0].map(function (c) { return { id: c.id, title: c.title, blurb: c.blurb || "" }; }), sessions: res[1].map(rowToSession), settings: {} };
@@ -245,6 +248,36 @@
     if (trainee) url += "&trainee=eq." + encodeURIComponent(trainee);
     return rest(url, { headers: anonHeaders() });
   }
+  // ---------- resets (admin) ----------
+  function clearLocalFor(name, sessionKey) {
+    var keepE = function (e) { return !(e.trainee === name && (!sessionKey || e.session_key === sessionKey)); };
+    store.set("events", localAll().filter(keepE));
+    store.set("queue", store.get("queue", []).filter(keepE));
+    try {
+      var ids = [];
+      if (sessionKey) { var ss = sessions.filter(function (x) { return x.key === sessionKey; })[0]; ids = ((ss && ss.activities) || []).map(function (a) { return a.id; }); }
+      for (var i = localStorage.length - 1; i >= 0; i--) {
+        var k = localStorage.key(i) || "", pre = "dd:board:" + name + ":";
+        if (k.indexOf(pre) === 0 && (!sessionKey || ids.indexOf(k.slice(pre.length)) > -1)) localStorage.removeItem(k);
+      }
+    } catch (e) { }
+  }
+  function resetTrainee(name, sessionKey) {
+    clearLocalFor(name, sessionKey);
+    var marks = Object.assign({}, (M.settings && M.settings.resets) || {});
+    var list = (marks[name] || []).slice(-30); list.push({ at: Date.now(), session: sessionKey || null }); marks[name] = list;
+    if (!remote) { M.settings = M.settings || {}; M.settings.resets = marks; persistLocal(); return Promise.resolve(); }
+    var q = CFG.table + "?trainee=eq." + encodeURIComponent(name) + (sessionKey ? "&session_key=eq." + encodeURIComponent(sessionKey) : "");
+    return adminRest(q, { method: "DELETE", headers: { Prefer: "return=minimal" } }).then(function () { return saveSetting("resets", marks); });
+  }
+  // On a trainee's device: apply any reset the admin made since this device last looked.
+  function applyResets() {
+    var name = me(); if (!name) return;
+    var list = ((M.settings && M.settings.resets) || {})[name] || [];
+    var seen = +store.get("resetSeen:" + name, 0) || 0, newest = seen;
+    list.forEach(function (r) { if (r.at > seen) { clearLocalFor(name, r.session); newest = Math.max(newest, r.at); } });
+    if (newest > seen) store.set("resetSeen:" + name, newest);
+  }
   var events = [];
   function localAll() { return store.get("events", []); }
   function flushQueue() {
@@ -254,6 +287,7 @@
     return apiInsert(q).then(function () { store.set("queue", []); online = true; }).catch(function () { online = false; });
   }
   function loadEvents() {
+    applyResets();
     var name = me();
     if (!name) { events = []; return Promise.resolve(); }
     var local = localAll().filter(function (e) { return e.trainee === name; });
@@ -883,7 +917,7 @@
           "<h4>" + esc(l.name) + '</h4><span class="li">' + esc(l.info) + "</span>" +
           (canDrop ? '<button class="drop" data-lane="' + esc(l.id) + '">Move here</button>' : "") +
           lj.map(function (j) {
-            return '<button class="job' + (sel === j.id ? " sel" : "") + (start[j.id] !== assign[j.id] ? " moved" : "") + '" data-job="' + esc(j.id) + '"><span class="wo num">WO ' + esc(j.id) + "</span><b>" + esc(j.store) + "</b><span>" + esc(j.town) + "</span>" + (j.note ? '<span class="nt">' + esc(j.note) + "</span>" : "") + "</button>";
+            return '<button class="job' + (sel === j.id ? " sel" : "") + (start[j.id] !== assign[j.id] ? " moved" : "") + '" data-job="' + esc(j.id) + '">' + (j.nowo ? "" : '<span class="wo num">WO ' + esc(j.id) + "</span>") + "<b>" + esc(j.store) + "</b><span>" + esc(j.town) + "</span>" + (j.note ? '<span class="nt">' + esc(j.note) + "</span>" : "") + "</button>";
           }).join("") +
           (lj.length === 0 ? '<span class="li">' + (l.id === "unscheduled" ? "Empty. Nice." : "No jobs") + "</span>" : "") + "</div>";
       }).join("");
@@ -1093,7 +1127,7 @@
           return '<div class="lane' + (l.id === "unscheduled" ? " unsched" : "") + (lf ? " found" : "") + '"><button class="lane-name" data-t="lane:' + esc(l.id) + '"><h4>' + esc(l.name) + '</h4><span class="li">' + esc(l.info) + "</span></button>" +
             jobs.filter(function (j) { return j.lane === l.id; }).map(function (j) {
               var p = problemFor(j.id), f = p && found[p.id];
-              return '<button class="job' + (f ? " found" : "") + '" data-t="' + esc(j.id) + '"><span class="wo num">WO ' + esc(j.id) + "</span><b>" + esc(j.store) + "</b><span>" + esc(j.town) + "</span>" + (j.note ? '<span class="nt">' + esc(j.note) + "</span>" : "") + "</button>";
+              return '<button class="job' + (f ? " found" : "") + '" data-t="' + esc(j.id) + '">' + (j.nowo ? "" : '<span class="wo num">WO ' + esc(j.id) + "</span>") + "<b>" + esc(j.store) + "</b><span>" + esc(j.town) + "</span>" + (j.note ? '<span class="nt">' + esc(j.note) + "</span>" : "") + "</button>";
             }).join("") + "</div>";
         }).join("") + '</div><div id="spotMsgs" class="results">' + msgs.join("") + "</div></div>";
       box.querySelectorAll("[data-t]").forEach(function (b) { b.onclick = function () { tap(b.getAttribute("data-t")); }; });
@@ -1600,6 +1634,7 @@
       case "activity_complete": return "Finished an activity in " + t;
       case "answer": return "Answered: " + (e.choice || "");
       case "card": return "Flashcard " + (e.choice === "got" ? "got it" : "see again");
+      case "slide_read": return "Read a slide in " + (e.session_key || "a lesson");
       case "board_check": return "Checked board: " + ((e.meta && e.meta.hits) || 0) + " of " + ((e.meta && e.meta.total) || 5) + " goals";
       case "badge": return "Earned badge " + (e.item_key || "");
     }
@@ -1627,7 +1662,10 @@
         return '<div class="coach-card"><h3>' + esc(n) + '</h3><div class="kv num"><span>Points</span><b>' + pts + "</b><span>Level</span><b>" + esc(level(pts)) + "</b><span>Last active</span><b>" + last + "</b><span>Lessons finished</span><b>" + Object.keys(doneKeys).length + "</b><span>Lesson time</span><b>" + mins + " min</b><span>Calls answered</span><b>" + fa.length + "</b></div>" +
           '<div class="mix" title="First answers: pro, good, safe"><i style="width:' + (mix.best / total * 100) + '%;background:var(--green)"></i><i style="width:' + (mix.good / total * 100) + '%;background:var(--sky)"></i><i style="width:' + (mix.ok / total * 100) + '%;background:var(--sun)"></i></div>' +
           '<p class="k">First answers: ' + mix.best + " pro, " + mix.good + " good, " + mix.ok + " safe.</p>" +
-          (talk.length ? '<p style="font-size:15px"><b>Talk through:</b></p><ul class="talk">' + talk.slice(0, 5).map(function (t) { return "<li>" + esc(t) + "</li>"; }).join("") + "</ul>" : "") + "</div>";
+          (talk.length ? '<p style="font-size:15px"><b>Talk through:</b></p><ul class="talk">' + talk.slice(0, 5).map(function (t) { return "<li>" + esc(t) + "</li>"; }).join("") + "</ul>" : "") +
+          '<div class="reset-box"><b>Reset</b><p class="k">Clears answers, points and progress so ' + esc(n) + ' can start fresh. The content itself is not touched.</p>' +
+          '<div class="btn-row"><select class="input sm" data-reset-sel="' + esc(n) + '">' + sessions.slice().sort(function (a, b) { return a.key < b.key ? -1 : 1; }).map(function (x) { return '<option value="' + esc(x.key) + '">' + esc((x.day === "tue" ? "Learn: " : "Play: ") + x.title) + "</option>"; }).join("") + '</select>' +
+          '<button class="btn sm" data-reset-one="' + esc(n) + '">Reset this one</button><button class="btn sm danger-ghost" data-reset-all="' + esc(n) + '">Reset everything</button></div></div></div>';
       }).join("");
       var table = '<div class="table-box"><table><thead><tr><th>When</th><th>Who</th><th>What</th><th>Result</th><th>Points</th></tr></thead><tbody>' +
         rows.slice(0, 300).map(function (e) {
@@ -1635,6 +1673,19 @@
         }).join("") + (rows.length ? "" : '<tr><td colspan="5">No activity yet. It shows up here the moment Dana or Devin opens a session.</td></tr>') + "</tbody></table></div>";
       document.getElementById("adminBody").innerHTML = note + '<div><button class="btn" id="refresh">Refresh</button></div><div class="coach-cards">' + cards + '</div><h2 style="font-size:24px">Activity log</h2>' + table;
       document.getElementById("refresh").onclick = renderLog;
+      var done = function (msg) { return function () { toast(msg); renderLog(); }; };
+      document.querySelectorAll("[data-reset-one]").forEach(function (b) {
+        var n = b.getAttribute("data-reset-one");
+        armConfirm(b, "Yes, reset it", function () {
+          var sel = document.querySelector('[data-reset-sel="' + n + '"]'), key = sel && sel.value;
+          var title = sel ? sel.options[sel.selectedIndex].text : key;
+          resetTrainee(n, key).then(done(title + " is reset for " + n + "."), fail);
+        });
+      });
+      document.querySelectorAll("[data-reset-all]").forEach(function (b) {
+        var n = b.getAttribute("data-reset-all");
+        armConfirm(b, "Yes, reset all of " + n + "'s progress", function () { resetTrainee(n, null).then(done(n + " starts fresh. All points and progress cleared."), fail); });
+      });
     });
   }
 

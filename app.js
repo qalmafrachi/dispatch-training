@@ -148,7 +148,7 @@
   function sessionByKey(k) { return sessions.filter(function (s) { return s.key === k; })[0]; }
 
   // ----- rotation: each trainee gets the weekly units in a different order -----
-  // A unit = one topic week (Tuesday lesson + Friday play). Units are ordered by topic, then week.
+  // A unit = one topic week (Tuesday lesson + Thursday play). Units are ordered by topic, then week.
   function units() {
     var seen = {}, out = [];
     sessions.filter(function (s) { return s.published; }).forEach(function (s) {
@@ -182,7 +182,7 @@
   function unlockDate(s, name) {
     if (name === undefined) name = me();
     var d = parseDate(program().programStart);
-    d.setDate(d.getDate() + weekNumberFor(s, name) * 7 + (s.day === "fri" ? 3 : 0));
+    d.setDate(d.getDate() + weekNumberFor(s, name) * 7 + (s.day === "fri" ? 2 : 0));
     return d;
   }
   function isUnlocked(s) { return isAdmin() || startOfDay(new Date()) >= unlockDate(s); }
@@ -499,7 +499,7 @@
     if (!s) return "";
     var open = isUnlocked(s), done = sessionDone(s);
     var cls = "day-card " + (s.kind === "lesson" ? "learn" : "play") + (open ? "" : " locked") + (done ? " done" : "");
-    var dayLabel = s.kind === "lesson" ? "Tuesday. Learn" : "Friday. Play";
+    var dayLabel = s.kind === "lesson" ? "Tuesday. Learn" : "Thursday. Play";
     var meta = s.kind === "lesson" ? s.minutes + " min. Watch it or click through it." : s.minutes + " min. Flashcards, real calls, real boards.";
     var go = !open ? "Opens " + fmtDay(unlockDate(s)) : done ? "Done. Play it again" : "Start";
     return '<button class="' + cls + '" ' + (open ? 'data-go="' + esc(s.key) + '"' : 'aria-disabled="true"') + ">" +
@@ -536,7 +536,7 @@
       (remote && !online ? '<p class="note">Saving is paused because the training log can\'t be reached. Your progress is kept on this device and will catch up on its own.</p>' : "") +
       '</div><div class="dial-box">' + dialSVG(done, visible.length) + '<p class="dial-cap">sessions done so far</p></div></section>' +
       '<section class="rules" aria-label="Desk rules"><div><b>Save the 12-hour clock first.</b><span>Calls that can still make 12 hours go to the top of the board.</span></div><div><b>Fill every board.</b><span>Leftover jobs roll over. Empty hours are gone.</span></div><div><b>Tell them before they ask.</b><span>Techs, stores and Coke hear it from us first.</span></div></section>' +
-      '<div class="section-head"><h2>This week</h2><span>New lesson every Tuesday, new games every Friday</span></div>' +
+      '<div class="section-head"><h2>This week</h2><span>New lesson every Tuesday, new games every Thursday</span></div>' +
       '<section class="week">' + dayCard(thisWeek.filter(function (s) { return s.day === "tue"; })[0]) + dayCard(thisWeek.filter(function (s) { return s.day === "fri"; })[0]) + "</section>" +
       '<div class="section-head"><h2>Badges</h2><span class="num">' + have.length + " of " + BADGES.length + "</span></div>" +
       '<section class="badges">' + BADGES.map(function (b) {
@@ -748,7 +748,7 @@
       stage.className = "stage k-mission";
       stage.innerHTML = '<div class="slide"><h2>Lesson done.</h2><p class="lead">' +
         (first ? "+50 points. " : "Nice refresher. ") + "You spent " + Math.max(1, Math.round(secs / 60)) + " minutes making the desk sharper." +
-        (next ? " Friday brings " + esc(next.title.toLowerCase()) + "." : "") + "</p></div>";
+        (next ? " Thursday brings " + esc(next.title.toLowerCase()) + "." : "") + "</p></div>";
       document.querySelector(".controls").innerHTML = '<span></span><button class="btn sun" id="homeBtn">Back to the desk</button>';
       document.getElementById("homeBtn").onclick = function () { location.hash = previewMode ? "admin" : "home"; };
     }
@@ -1301,16 +1301,16 @@
       cyc.map(function (c, ci) {
         var cs = M.sessions.filter(function (s) { return s.cycle === c.id; }).sort(function (a, b) { return a.week - b.week || DAY_ORDER[a.day] - DAY_ORDER[b.day]; });
         return '<div class="coach-card admin-cycle" data-cid="' + c.id + '">' +
-          '<div class="form-row" style="justify-content:space-between"><h3>Topic ' + (ci + 1) + '</h3><span class="k">Two weeks: a Tuesday lesson and a Friday play session each week</span></div>' +
+          '<div class="form-row" style="justify-content:space-between"><h3>Topic ' + (ci + 1) + '</h3><span class="k">Two weeks: a Tuesday lesson and a Thursday play session each week</span></div>' +
           '<label class="fld"><span>Title</span><input class="input" data-cf="title" value="' + esc(c.title) + '"></label>' +
           '<label class="fld"><span>Short description</span><textarea class="input" rows="2" data-cf="blurb">' + esc(c.blurb) + "</textarea></label>" +
           '<div class="btn-row"><button class="btn" data-savecycle="' + c.id + '">Save topic</button><button class="btn danger-ghost" data-delcycle="' + c.id + '">Delete topic</button></div>' +
           '<div class="path">' + (cs.length ? cs.map(function (s) {
-            return '<div class="path-row admin-row"><span class="when num">Week ' + s.week + ", " + (s.day === "tue" ? "Tue" : "Fri") + '</span><span><span class="t">' + esc(s.title) + '</span><br><span class="k">' + (s.kind === "lesson" ? (s.slides || []).length + " slides" : (s.activities || []).length + " activities") + (s.published ? ". " + (program().trainees || []).map(function (n) { return esc(n) + ": program week " + (weekNumberFor(s, n) + 1); }).join(", ") : "") + "</span></span>" +
+            return '<div class="path-row admin-row"><span class="when num">Week ' + s.week + ", " + (s.day === "tue" ? "Tue" : "Thu") + '</span><span><span class="t">' + esc(s.title) + '</span><br><span class="k">' + (s.kind === "lesson" ? (s.slides || []).length + " slides" : (s.activities || []).length + " activities") + (s.published ? ". " + (program().trainees || []).map(function (n) { return esc(n) + ": program week " + (weekNumberFor(s, n) + 1); }).join(", ") : "") + "</span></span>" +
               '<span class="btn-row"><span class="state ' + (s.published ? "done" : "locked") + '">' + (s.published ? "Live" : "Draft") + '</span><button class="btn sm" data-preview="' + esc(s.key) + '">Preview</button><button class="btn sm primary" data-edit="' + esc(s.key) + '">Edit</button></span></div>';
           }).join("") : '<p class="k">No sessions yet.</p>') + "</div>" +
           '<div class="form-row"><label class="fld inline"><span>Add for week</span><select class="input" data-addweek><option value="1">1</option><option value="2">2</option></select></label>' +
-          '<button class="btn sm" data-addlesson="' + c.id + '">Add Tuesday lesson</button><button class="btn sm" data-addplay="' + c.id + '">Add Friday play</button></div>' +
+          '<button class="btn sm" data-addlesson="' + c.id + '">Add Tuesday lesson</button><button class="btn sm" data-addplay="' + c.id + '">Add Thursday play</button></div>' +
           "</div>";
       }).join("") +
       '<div><button class="btn sun" id="addCycle">Add a topic</button></div>';
@@ -1474,7 +1474,7 @@
         '<label class="fld"><span>Title</span><input class="input" data-p="' + pathAttr(["title"]) + '" data-t="text" value="' + esc(d.title) + '"></label>' +
         '<label class="fld"><span>Topic</span><select class="input" data-p="' + pathAttr(["cycle"]) + '" data-t="num">' + cycOpts + "</select></label>" +
         '<label class="fld"><span>Week</span><select class="input" data-p="' + pathAttr(["week"]) + '" data-t="num"><option value="1"' + (+d.week === 1 ? " selected" : "") + '>Week 1</option><option value="2"' + (+d.week === 2 ? " selected" : "") + ">Week 2</option></select></label>" +
-        '<label class="fld"><span>Day it opens</span><select class="input" data-p="' + pathAttr(["day"]) + '" data-t="text"><option value="tue"' + (d.day === "tue" ? " selected" : "") + '>Tuesday</option><option value="fri"' + (d.day === "fri" ? " selected" : "") + ">Friday</option></select></label>" +
+        '<label class="fld"><span>Day it opens</span><select class="input" data-p="' + pathAttr(["day"]) + '" data-t="text"><option value="tue"' + (d.day === "tue" ? " selected" : "") + '>Tuesday</option><option value="fri"' + (d.day === "fri" ? " selected" : "") + ">Thursday</option></select></label>" +
         '<label class="fld"><span>Minutes</span><input class="input" type="number" data-p="' + pathAttr(["minutes"]) + '" data-t="num" value="' + esc(d.minutes) + '"></label>' +
         '<label class="fld check"><input type="checkbox" data-p="' + pathAttr(["published"]) + '" data-t="bool"' + (d.published ? " checked" : "") + "><span>Live for trainees (unchecked = draft only you can see)</span></label>" +
         "</div></div>" +
